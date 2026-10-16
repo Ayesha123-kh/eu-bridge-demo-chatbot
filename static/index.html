@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HireBot</title>
+</head>
+<body>
+  <h1>HireBot</h1>
+  <div id="chat-window"></div>
+  <input id="email" placeholder="Your email">
+  <input id="chat-input" placeholder="Ask a question...">
+  <button id="send-btn">Send</button>
+  <script>
+    const win = document.getElementById("chat-window");
+    document.getElementById("send-btn").onclick = async () => {
+      const email = document.getElementById("email").value;
+      const message = document.getElementById("chat-input").value;
+      win.innerHTML += "<p><b>You:</b> " + message + "</p>";
+      const res = await fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, message }),
+      });
+      const data = await res.json();
+      win.innerHTML += "<p><b>Bot:</b> " + data.reply + "</p>";
+    };
+  </script>
+</body>
+</html>
