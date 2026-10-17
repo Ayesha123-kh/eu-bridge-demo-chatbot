@@ -6,20 +6,32 @@
 </head>
 <body>
   <h1>HireBot</h1>
+  <p>Ask about open roles and upload your CV.</p>
+
   <div id="chat-window"></div>
   <input id="email" placeholder="Your email">
-  <input id="chat-input" placeholder="Ask a question...">
+  <input id="phone" placeholder="Your phone number">
+  <input id="chat-input" placeholder="Ask a question about the role...">
   <button id="send-btn">Send</button>
+
+  <form id="cv-form">
+    <input id="applicant-name" placeholder="Full name">
+    <input id="applicant-phone" placeholder="Phone number">
+    <input id="cv-file" type="file">
+    <button id="cv-btn" type="submit">Upload CV</button>
+  </form>
+
   <script>
     const win = document.getElementById("chat-window");
     document.getElementById("send-btn").onclick = async () => {
       const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
       const message = document.getElementById("chat-input").value;
       win.innerHTML += "<p><b>You:</b> " + message + "</p>";
       const res = await fetch("/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, message }),
+        body: JSON.stringify({ email, phone, message }),
       });
       const data = await res.json();
       win.innerHTML += "<p><b>Bot:</b> " + data.reply + "</p>";
